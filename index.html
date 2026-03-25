@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Morning Momentum</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=Playfair+Display:ital,wght@0,600;1,600&family=Inter:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  
+  <style>
+    /* ── Reset & Tokens ─────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --text:      #1a202c;      /* Charcoal black */
+      --text-mute: #4a5568;      /* Deep gray */
+      --surface:   rgba(255, 255, 255, 0.65);
+      --border:    rgba(255, 255, 255, 0.7);
+      --glass:     blur(24px) saturate(160%);
+      --accent:    #2d3748;
+      --radius:    20px;
+      
+      --ui-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
+      --text-glow: 0 0 20px rgba(255, 255, 255, 0.8), 0 0 10px rgba(255, 255, 255, 0.5);
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #fdfdfd url('photo_resource/for_web.jpg') no-repeat center center;
+      background-size: cover;
+      background-attachment: fixed;
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+      display: flex;
+    }
+
+    /* 全局防護遮罩，極微透明的白色，確保在任何背景下都有底度對比 */
+    body::before {
+      content: "";
+      position: fixed; inset: 0;
+      background: rgba(255, 255, 255, 0.3);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    /* ── Layout ─────────────────────────────────────── */
+    .app-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      min-height: 100vh;
+      padding: 60px 24px 100px;
+      gap: 32px;
+    }
+
+    /* ── Brand & Quote Sections (Top & Centered) ────── */
+    .brand-section {
+      text-align: center;
+      width: 100%;
+      max-width: 720px;
+      padding: 40px;
+      background: var(--surface);
+      backdrop-filter: var(--glass);
+      -webkit-backdrop-filter: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--ui-shadow);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .logo-text {
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      margin-bottom: 24px;
+      text-shadow: var(--text-glow);
+    }
+    .logo-text span {
+      font-weight: 300;
+      color: var(--text-mute);
+    }
+
+    .quote-box {
+      position: relative;
+      max-width: 560px;
+    }
+    .quote-box::before {
+      content: "“";
+      font-family: 'Playfair Display', serif;
+      font-size: 6rem;
+      color: rgba(26, 32, 44, 0.08);
+      position: absolute;
+      top: -30px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: -1;
+      line-height: 1;
+    }
+
+    .quote-text {
+      font-family: 'Noto Serif TC', serif;
+      font-size: 1.3rem;
+      font-weight: 600;
+      line-height: 1.8;
+      color: var(--text);
+      margin-bottom: 24px;
+      letter-spacing: 0.05em;
+    }
+
+    .quote-author {
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-mute);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+    .quote-author::before, .quote-author::after {
+      content: "";
+      width: 32px;
+      height: 1px;
+      background: var(--text-mute);
+      opacity: 0.5;
+    }
+
+    /* ── UI Section (Center) ────────────────────────── */
+    .ui-section {
+      width: 100%;
+      max-width: 600px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    /* Top Bar */
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 24px;
+      background: var(--surface);
+      backdrop-filter: var(--glass);
+      -webkit-backdrop-filter: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--ui-shadow);
+    }
+
+    .clock-group {
+      display: flex;
+      flex-direction: column;
+    }
+    #clock {
+      font-family: 'DM Mono', monospace;
+      font-size: 1.8rem;
+      font-weight: 500;
+      color: var(--text);
+      line-height: 1.1;
+    }
+    #date-label {
+      font-size: 0.85rem;
+      color: var(--text-mute);
+      font-weight: 500;
+      margin-top: 4px;
+    }
+
+    #settings-btn {
+      background: rgba(255,255,255,0.7);
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      width: 48px; height: 48px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      font-size: 1.2rem;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      color: var(--text);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+    #settings-btn:hover { background: #fff; transform: rotate(45deg) scale(1.05); box-shadow: 0 8px 24px rgba(0,0,0,0.1); }
+
+    /* Glass Card for Schedule */
+    .glass-card {
+      background: var(--surface);
+      backdrop-filter: var(--glass);
+      -webkit-backdrop-filter: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--ui-shadow);
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .planner-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-mute);
+      margin-bottom: 24px;
+      text-align: center;
+      position: relative;
+    }
+    .planner-title::before, .planner-title::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      width: Calc(50% - 100px);
+      height: 1px;
+      background: rgba(0,0,0,0.1);
+    }
+    .planner-title::before { left: 0; }
+    .planner-title::after { right: 0; }
+
+    /* ── 24h Table ───────────────────────────────────── */
+    .schedule {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .hour-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 12px 18px;
+      background: rgba(255, 255, 255, 0.5);
+      border: 1px solid transparent;
+      border-radius: 12px;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .hour-row:hover {
+      background: rgba(255, 255, 255, 0.9);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+    }
+    .hour-row.current-hour {
+      background: #ffffff;
+      border: 1px solid rgba(0,0,0,0.1);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    }
+    .hour-row.current-hour::before {
+      content: "";
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 4px;
+      background: var(--text);
+    }
+
+    .hour-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--text-mute);
+      min-width: 54px;
+      user-select: none;
+    }
+    .current-hour .hour-label { color: var(--text); font-weight: 600; }
+
+    .hour-input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 500;
+    }
+    .hour-input::placeholder { color: #a0aec0; font-weight: 400; }
+
+    .dot-indicator {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--text);
+      flex-shrink: 0;
+      opacity: 0;
+      transition: opacity 0.3s, transform 0.3s;
+      transform: scale(0.5);
+    }
+    .hour-row:has(.hour-input:not(:placeholder-shown)) .dot-indicator { 
+      opacity: 1; 
+      transform: scale(1);
+    }
+
+    /* ── Sync Button ─────────────────────────────────── */
+    .sync-area {
+      margin-top: 36px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    #sync-btn {
+      width: 100%;
+      padding: 18px;
+      border: none;
+      border-radius: 14px;
+      background: var(--accent);
+      color: #ffffff;
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 1.05rem;
+      cursor: pointer;
+      letter-spacing: 0.05em;
+      box-shadow: 0 8px 24px rgba(45, 55, 72, 0.25);
+      transition: all 0.2s ease;
+    }
+    #sync-btn:hover { 
+      transform: translateY(-2px); 
+      box-shadow: 0 12px 32px rgba(45, 55, 72, 0.35); 
+      background: #1a202c;
+    }
+    #sync-btn:active { transform: translateY(0); }
+    #sync-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; box-shadow: none; }
+
+    #sync-status {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--text-mute);
+      min-height: 1.2em;
+      text-align: center;
+    }
+    #sync-status.success { color: #38a169; }
+    #sync-status.error   { color: #e53e3e; }
+
+    /* ── Settings Drawer ─────────────────────────────── */
+    .drawer-overlay {
+      position: fixed; inset: 0;
+      background: rgba(255,255,255,0.2);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 90;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+    .drawer-overlay.open { opacity: 1; pointer-events: all; }
+
+    .drawer {
+      position: fixed;
+      top: 0; right: 0;
+      width: 400px;
+      max-width: 100vw;
+      height: 100vh;
+      background: rgba(255, 255, 255, 0.85);
+      border-left: 1px solid rgba(255,255,255,0.9);
+      backdrop-filter: blur(32px) saturate(200%);
+      -webkit-backdrop-filter: blur(32px) saturate(200%);
+      z-index: 100;
+      padding: 40px 32px;
+      overflow-y: auto;
+      transform: translateX(100%);
+      transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: -10px 0 40px rgba(0,0,0,0.05);
+    }
+    .drawer.open { transform: translateX(0); }
+
+    .drawer-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 40px;
+    }
+    .drawer-title {
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: var(--text);
+      letter-spacing: 0.05em;
+    }
+    .drawer-close {
+      background: rgba(0,0,0,0.05);
+      border: none;
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      color: var(--text);
+      font-size: 1.2rem;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s;
+    }
+    .drawer-close:hover { background: rgba(0,0,0,0.1); }
+
+    /* Form controls in drawer */
+    .field { margin-bottom: 28px; }
+    .field label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-mute);
+      margin-bottom: 12px;
+    }
+
+    .field select {
+      padding: 14px 16px;
+      background: #ffffff;
+      border: 1px solid rgba(0,0,0,0.1);
+      border-radius: 12px;
+      color: var(--text);
+      font-family: 'DM Mono', monospace;
+      font-size: 1rem;
+      outline: none;
+      transition: all 0.2s;
+      appearance: none;
+      -webkit-appearance: none;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+    }
+    .field select:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(45,55,72,0.1); }
+
+    /* Custom 24h Time Picker */
+    .time-picker {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .time-picker select { flex: 1; text-align: center; }
+    .time-sep { color: var(--text); font-weight: bold; font-size: 1.2rem; }
+
+    /* Toggle Switch */
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 44px;
+      height: 24px;
+    }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider {
+      position: absolute; cursor: pointer; inset: 0;
+      background-color: rgba(0,0,0,0.15); transition: .4s;
+    }
+    .slider:before {
+      position: absolute; content: ""; height: 18px; width: 18px;
+      left: 3px; bottom: 3px; background-color: white; transition: .4s;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    input:checked + .slider { background-color: #48bb78; }
+    input:checked + .slider:before { transform: translateX(20px); }
+    .slider.round { border-radius: 24px; }
+    .slider.round:before { border-radius: 50%; }
+
+    /* Password Modal */
+    #pwd-modal {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.4);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      z-index: 999;
+      align-items: center; justify-content: center;
+    }
+    #pwd-modal.open { display: flex; }
+
+    .modal-box {
+      background: white; padding: 32px; border-radius: 20px;
+      max-width: 400px; width: 90%;
+      box-shadow: 0 40px 100px rgba(0,0,0,0.3);
+      font-family: 'Inter', sans-serif;
+      transform: translateY(20px);
+      animation: modalIn 0.3s forwards ease-out;
+    }
+    @keyframes modalIn {
+      to { transform: translateY(0); }
+    }
+    .modal-title { margin-bottom: 12px; font-size: 1.2rem; font-weight: 700; color: var(--text); }
+    .modal-desc { font-size: 0.9rem; color: var(--text-mute); margin-bottom: 24px; line-height: 1.6; }
+    .modal-input { width: 100%; padding: 14px 16px; border: 1px solid rgba(0,0,0,0.1); border-radius: 12px; font-size: 1rem; margin-bottom: 24px; outline: none; transition: border 0.3s; }
+    .modal-input:focus { border-color: var(--accent); }
+    .modal-actions { display: flex; gap: 12px; justify-content: flex-end; }
+    .modal-btn { padding: 12px 20px; border: none; border-radius: 10px; font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+    .modal-btn.cancel { background: #edf2f7; color: var(--text-mute); }
+    .modal-btn.cancel:hover { background: #e2e8f0; }
+    .modal-btn.save { background: var(--accent); color: white; }
+    .modal-btn.save:hover { background: #1a202c; }
+
+    .field input[type="file"] { display: none; }
+    .file-label {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 16px;
+      background: #ffffff;
+      border: 1px dashed rgba(0,0,0,0.2);
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      color: var(--text-mute);
+      transition: all 0.2s;
+    }
+    .file-label:hover { border-color: var(--accent); color: var(--text); background: rgba(0,0,0,0.02); }
+    #file-name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+    /* Volume slider */
+    .field input[type="range"] {
+      width: 100%;
+      accent-color: var(--accent);
+      cursor: pointer;
+      height: 6px;
+      background: rgba(0,0,0,0.1);
+      border-radius: 3px;
+    }
+    .volume-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .volume-val {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.9rem;
+      color: var(--text);
+      font-weight: 500;
+      min-width: 40px;
+      text-align: right;
+    }
+
+    /* Device select arrow */
+    .select-wrap { position: relative; width: 100%; }
+    .select-wrap::after {
+      content: "▾";
+      position: absolute;
+      right: 16px; top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-mute);
+      pointer-events: none;
+      font-size: 1rem;
+    }
+    .select-wrap select { width: 100%; }
+
+    /* Alarm status */
+    .alarm-status {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--text-mute);
+      margin-bottom: 24px;
+      padding: 16px;
+      background: rgba(0,0,0,0.03);
+      border-radius: 12px;
+    }
+    .alarm-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: rgba(0,0,0,0.2);
+      flex-shrink: 0;
+    }
+    .alarm-dot.active {
+      background: #48bb78;
+      box-shadow: 0 0 12px #48bb78;
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%,100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.6; transform: scale(1.2); }
+    }
+
+    /* Stop button */
+    #stop-btn {
+      width: 100%;
+      padding: 16px;
+      border: none;
+      border-radius: 12px;
+      background: #fff5f5;
+      color: #e53e3e;
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 4px 12px rgba(229, 62, 62, 0.1);
+    }
+    #stop-btn:hover { background: #fed7d7; transform: translateY(-1px); }
+
+    .divider {
+      border: none;
+      border-top: 1px solid rgba(0,0,0,0.08);
+      margin: 32px 0;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.15); border-radius: 99px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(0,0,0,0.25); }
+
+    /* Alarm ring flash */
+    @keyframes flash-border {
+      0%,100% { border-color: var(--border); }
+      50% { border-color: rgba(229, 62, 62, 0.8); box-shadow: 0 0 40px rgba(229, 62, 62, 0.2); }
+    }
+    body.ringing .glass-card { animation: flash-border 1s ease-in-out infinite; }
+  </style>
+</head>
+<body>
+
+<div class="app-container">
+
+  <!-- ── Brand & Quote ── -->
+  <section class="brand-section">
+    <h1 class="logo-text">Morning<span>Momentum</span></h1>
+    <div class="quote-box">
+      <p class="quote-text">
+        自律不是早睡早起每天運動，自律是儘管這條路上很多你不想做的事情，但你還是會去完成它達到目標。
+      </p>
+      <div class="quote-author">David Bowie</div>
+    </div>
+  </section>
+
+  <!-- ── Planner UI ── -->
+  <section class="ui-section">
+    <!-- Top Bar -->
+    <div class="top-bar">
+      <div class="clock-group">
+        <div id="clock">00:00:00</div>
+        <div id="date-label">載入中…</div>
+      </div>
+      <button id="settings-btn" title="設定">⚙️</button>
+    </div>
+
+    <!-- 24h Table Card -->
+    <div class="glass-card">
+      <p class="planner-title">今日計畫 Daily Schedule</p>
+      <div class="schedule" id="schedule"></div>
+
+      <div class="sync-area">
+        <button id="sync-btn">同步至 Mac 提醒事項</button>
+        <p id="sync-status"></p>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- ── Drawer Overlay ── -->
+<div class="drawer-overlay" id="overlay"></div>
+
+<!-- ── Settings Drawer ── -->
+<div class="drawer" id="drawer">
+  <div class="drawer-header">
+    <span class="drawer-title">Preferences</span>
+    <button class="drawer-close" id="close-drawer">✕</button>
+  </div>
+
+  <!-- Alarm time -->
+  <div class="field">
+    <label>鬧鐘時間 Time</label>
+    <div class="time-picker">
+      <div class="select-wrap">
+        <select id="alarm-hour"></select>
+      </div>
+      <span class="time-sep">:</span>
+      <div class="select-wrap">
+        <select id="alarm-minute"></select>
+      </div>
+    </div>
+  </div>
+
+  <!-- Wake Toggle -->
+  <div class="field" style="display: flex; align-items: center; justify-content: space-between;">
+    <div>
+      <label style="margin-bottom: 4px;">⚡️ 喚醒睡眠中的 Mac</label>
+      <div style="font-size: 0.75rem; color: var(--text-mute);">無縫授權背景休眠排程</div>
+    </div>
+    <label class="switch">
+      <input type="checkbox" id="wake-toggle" />
+      <span class="slider round"></span>
+    </label>
+  </div>
+
+  <!-- Music file -->
+  <div class="field">
+    <label>喚醒音樂 Audio File</label>
+    <label class="file-label" for="music-file">
+      <span class="file-icon">🎵</span>
+      <span id="file-name">點擊選取檔案 (MP3 / WAV)…</span>
+    </label>
+    <input type="file" id="music-file" accept=".mp3,.wav" />
+    <div style="display: flex; gap: 8px; margin-top: 10px;">
+      <button class="modal-btn" id="test-audio-btn" style="flex: 1; padding: 10px; font-size: 0.85rem; background: rgba(74, 144, 226, 0.1); color: #4a90e2; border: 1px solid rgba(74, 144, 226, 0.2);">🔊 測試 (Test)</button>
+      <button class="modal-btn" id="stop-test-btn" style="flex: 1; padding: 10px; font-size: 0.85rem; background: rgba(226, 74, 74, 0.1); color: #e24a4a; border: 1px solid rgba(226, 74, 74, 0.2);">⏹ 停止 (Stop)</button>
+    </div>
+  </div>
+
+  <!-- Volume -->
+  <div class="field">
+    <label>音量 Volume</label>
+    <div class="volume-row">
+      <input type="range" id="volume" min="0" max="100" value="80" />
+      <span class="volume-val" id="volume-val">80%</span>
+    </div>
+  </div>
+
+  <!-- Audio device -->
+  <div class="field">
+    <label>輸出裝置 Output Device</label>
+    <div class="select-wrap">
+      <select id="device-select">
+        <option value="">載入裝置中…</option>
+      </select>
+    </div>
+  </div>
+
+  <hr class="divider" />
+
+  <!-- Alarm status + stop -->
+  <div class="alarm-status">
+    <div class="alarm-dot" id="alarm-dot"></div>
+    <span id="alarm-status-text">鬧鐘未啟動</span>
+  </div>
+  <button id="stop-btn">停止鈴聲 Stop Alarm</button>
+</div>
+
+<!-- Password Modal -->
+<div id="pwd-modal" class="drawer-overlay">
+  <div class="modal-box">
+    <h3 class="modal-title">⚡️ 需要授權以啟動自動喚醒</h3>
+    <p class="modal-desc">為了讓工具能在打盹時喚醒 Mac 以準時響鈴，請輸入您此電腦的登入密碼。<br><br><span style="color:#a0aec0; font-size:0.8rem;">※ 您的密碼僅會加密保存在本地的 config.json 中，任何情況下皆不會上傳至網路。未來變更時間無須再輸入。</span></p>
+    <input type="password" id="mac-pwd-input" class="modal-input" placeholder="請輸入 Mac 開機密碼..." autocomplete="off">
+    <div class="modal-actions">
+      <button class="modal-btn cancel" id="pwd-cancel-btn">取消</button>
+      <button class="modal-btn save" id="pwd-save-btn">儲存並授權</button>
+    </div>
+  </div>
+</div>
+
+<!-- Hidden audio element -->
+<audio id="alarm-audio" loop></audio>
+
+<script>
+// ── DOM refs ──────────────────────────────────────────────────────────────────
+const scheduleEl    = document.getElementById('schedule');
+const clockEl       = document.getElementById('clock');
+const dateEl        = document.getElementById('date-label');
+const settingsBtn   = document.getElementById('settings-btn');
+const drawer        = document.getElementById('drawer');
+const overlay       = document.getElementById('overlay');
+const closeDrawer   = document.getElementById('close-drawer');
+const syncBtn       = document.getElementById('sync-btn');
+const syncStatus    = document.getElementById('sync-status');
+const alarmHourEl   = document.getElementById('alarm-hour');
+const alarmMinuteEl = document.getElementById('alarm-minute');
+const musicFileEl   = document.getElementById('music-file');
+const fileNameEl    = document.getElementById('file-name');
+const volumeEl      = document.getElementById('volume');
+const volumeValEl   = document.getElementById('volume-val');
+const deviceSelect  = document.getElementById('device-select');
+const stopBtn       = document.getElementById('stop-btn');
+const testAudioBtn  = document.getElementById('test-audio-btn');
+const stopTestBtn   = document.getElementById('stop-test-btn');
+const alarmAudio    = document.getElementById('alarm-audio');
+const alarmDot      = document.getElementById('alarm-dot');
+const alarmStatusEl = document.getElementById('alarm-status-text');
+const wakeToggle    = document.getElementById('wake-toggle');
+const pwdModal      = document.getElementById('pwd-modal');
+const pwdInput      = document.getElementById('mac-pwd-input');
+const pwdSaveBtn    = document.getElementById('pwd-save-btn');
+const pwdCancelBtn  = document.getElementById('pwd-cancel-btn');
+
+const BASE = 'http://127.0.0.1:5001';
+
+// ── Populate 24h Time Picker ──────────────────────────────────────────────────
+for (let i = 0; i < 24; i++) {
+  const opt = document.createElement('option');
+  opt.value = i; opt.textContent = String(i).padStart(2, '0');
+  alarmHourEl.appendChild(opt);
+}
+alarmHourEl.value = '7';
+
+for (let i = 0; i < 60; i++) {
+  const opt = document.createElement('option');
+  opt.value = i; opt.textContent = String(i).padStart(2, '0');
+  alarmMinuteEl.appendChild(opt);
+}
+alarmMinuteEl.value = '0';
+
+// ── Build 24h schedule ────────────────────────────────────────────────────────
+for (let h = 0; h < 24; h++) {
+  const label = String(h).padStart(2, '0') + ':00';
+  const row = document.createElement('div');
+  row.className = 'hour-row';
+  row.dataset.hour = h;
+  row.innerHTML = `
+    <span class="hour-label">${label}</span>
+    <input class="hour-input" type="text"
+           placeholder="輸入這小時的目標…"
+           id="hour-${h}" />
+    <span class="dot-indicator"></span>`;
+  scheduleEl.appendChild(row);
+}
+
+// ── Clock ─────────────────────────────────────────────────────────────────────
+const weekDays = ['日','一','二','三','四','五','六'];
+
+function updateClock() {
+  const now = new Date();
+  const hh = String(now.getHours()).padStart(2,'0');
+  const mm = String(now.getMinutes()).padStart(2,'0');
+  const ss = String(now.getSeconds()).padStart(2,'0');
+  clockEl.textContent = `${hh}:${mm}:${ss}`;
+
+  const yr  = now.getFullYear();
+  const mo  = String(now.getMonth()+1).padStart(2,'0');
+  const day = String(now.getDate()).padStart(2,'0');
+  const wd  = weekDays[now.getDay()];
+  dateEl.textContent = `${yr}.${mo}.${day} (週${wd})`;
+
+  // Highlight current hour row
+  document.querySelectorAll('.hour-row').forEach(r => {
+    r.classList.toggle('current-hour', parseInt(r.dataset.hour) === now.getHours());
+  });
+
+  // Alarm check
+  checkAlarm(now);
+}
+
+// Scroll to current hour on load
+window.addEventListener('load', () => {
+  const currentRow = document.querySelector('.hour-row.current-hour');
+  if (currentRow) {
+    currentRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+});
+
+// ── Alarm logic ───────────────────────────────────────────────────────────────
+let alarmFired = false;
+let isRinging  = false;
+
+musicFileEl.addEventListener('change', async (e) => {
+  const file = e.target.files[0];
+  if (file) {
+    fileNameEl.textContent = file.name;
+    
+    // Upload to backend
+    const formData = new FormData();
+    formData.append('file', file);
+    fileNameEl.textContent = file.name + ' (上傳中...)';
+    
+    try {
+      const res = await fetch(`${BASE}/upload_audio`, {
+        method: 'POST',
+        body: formData
+      });
+      if (res.ok) {
+        fileNameEl.textContent = file.name + ' (已同步至後台 ✓)';
+      } else {
+        fileNameEl.textContent = file.name + ' (上傳失敗)';
+      }
+    } catch (err) {
+      fileNameEl.textContent = file.name + ' (連線失敗)';
+    }
+  }
+});
+
+volumeEl.addEventListener('input', () => {
+  volumeValEl.textContent = volumeEl.value + '%';
+  // Volume is now handled by the backend
+});
+
+async function checkAlarm(now) {
+  const ah = Number(alarmHourEl.value);
+  const am = Number(alarmMinuteEl.value);
+  const match = now.getHours() === ah && now.getMinutes() === am && now.getSeconds() === 0;
+
+  if (match && !alarmFired) {
+    alarmFired = true;
+    await ringAlarm();
+  }
+
+  if (now.getHours() !== ah || now.getMinutes() !== am) {
+    alarmFired = false; // Reset for next day or new time
+  }
+}
+
+async function ringAlarm() {
+  // 1. Switch audio device
+  const selectedDevice = deviceSelect.value;
+  if (selectedDevice) {
+    try {
+      await fetch(`${BASE}/set_output`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ device: selectedDevice })
+      });
+    } catch (e) { /* non-fatal */ }
+  }
+
+  // 2. Play audio via Backend (afplay)
+  try {
+    const res = await fetch(`${BASE}/play_alarm`, { method: 'POST' });
+    if (!res.ok) throw new Error("Backend play failed");
+    
+    isRinging = true;
+    alarmDot.classList.add('active');
+    alarmStatusEl.textContent = '鈴聲播放中 (後台)！';
+    document.body.classList.add('ringing');
+    openDrawer();
+  } catch(e) {
+    console.error('播放失敗:', e);
+    alarmStatusEl.textContent = '播放失敗，請檢查後端服務';
+  }
+}
+
+// Test Audio
+testAudioBtn.addEventListener('click', async () => {
+  const selectedDevice = deviceSelect.value;
+  if (selectedDevice) {
+    try {
+      await fetch(`${BASE}/set_output`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ device: selectedDevice })
+      });
+    } catch (e) {}
+  }
+  
+  testAudioBtn.textContent = '播放中...';
+  try {
+    const res = await fetch(`${BASE}/play_alarm`, { method: 'POST' });
+    if (!res.ok) alert("播放失敗，請確認音樂檔案已上傳成功。");
+  } catch (e) {
+    alert("後端連線失敗");
+  } finally {
+    setTimeout(() => { testAudioBtn.textContent = '🔊 測試播放 (Test)'; }, 2000);
+  }
+});
+
+stopTestBtn.addEventListener('click', async () => {
+  try {
+    await fetch(`${BASE}/stop_alarm`, { method: 'POST' });
+  } catch (e) {}
+});
+
+stopBtn.addEventListener('click', stopAlarm);
+
+async function stopAlarm() {
+  try {
+    await fetch(`${BASE}/stop_alarm`, { method: 'POST' });
+  } catch (e) { console.error("Stop alarm failed", e); }
+  
+  isRinging = false;
+  alarmDot.classList.remove('active');
+  alarmStatusEl.textContent = '鬧鐘已停止';
+  document.body.classList.remove('ringing');
+  onAlarmTimeChange();
+}
+
+// Update status text when alarm time changes
+function onAlarmTimeChange() {
+  alarmFired = false;
+  const hstr = String(alarmHourEl.value).padStart(2, '0');
+  const mstr = String(alarmMinuteEl.value).padStart(2, '0');
+  alarmStatusEl.textContent = `已排定喚醒時間：${hstr}:${mstr}`;
+
+  if (wakeToggle.checked) {
+    sendWakeSchedule(false);
+  }
+}
+alarmHourEl.addEventListener('change', onAlarmTimeChange);
+alarmMinuteEl.addEventListener('change', onAlarmTimeChange);
+
+// Set Wake Schedule via Backend
+async function sendWakeSchedule(showPromptWarn = true) {
+  const enabled = wakeToggle.checked;
+  const ah = Number(alarmHourEl.value);
+  const am = Number(alarmMinuteEl.value);
+
+  try {
+    const res = await fetch(`${BASE}/set_wake_schedule`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ hour: ah, minute: am, enabled })
+    });
+    
+    // Auth required or failed
+    if (res.status === 401) {
+      const data = await res.json();
+      if (data.error === "AUTH_FAILED") {
+        alert("🔒 授權失敗：密碼不正確，請重新輸入。");
+      }
+      // Show Password Modal
+      wakeToggle.checked = false;
+      pwdInput.value = "";
+      pwdModal.classList.add('open');
+      setTimeout(() => pwdInput.focus(), 100);
+      return;
+    }
+
+    if (!res.ok) {
+        const text = await res.text();
+        throw new Error(text || "Server Error " + res.status);
+    }
+
+    const data = await res.json();
+    if (data.error) {
+      if (showPromptWarn) alert("⚠️ 喚醒排程失敗：\n" + data.error);
+      wakeToggle.checked = false; 
+    } else {
+      console.log("Wake status updated successfully:", data);
+    }
+  } catch (e) {
+    console.error("Wake API error:", e);
+    if (showPromptWarn) alert("❌ 無法連線至後端或執行指令：\n" + e.message);
+    wakeToggle.checked = false;
+  }
+}
+
+// Password Modal Logic
+pwdCancelBtn.addEventListener('click', () => {
+  pwdModal.classList.remove('open');
+});
+
+pwdSaveBtn.addEventListener('click', async () => {
+  const pwd = pwdInput.value.trim();
+  if (!pwd) return;
+  
+  pwdSaveBtn.textContent = "儲存中...";
+  try {
+    const res = await fetch(`${BASE}/save_password`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ password: pwd })
+    });
+    
+    if (res.ok) {
+      pwdModal.classList.remove('open');
+      wakeToggle.checked = true;
+      await sendWakeSchedule(true);
+    } else {
+      alert("儲存密碼失敗");
+    }
+  } catch (e) {
+    alert("網路錯誤");
+  } finally {
+    pwdSaveBtn.textContent = "儲存並授權";
+  }
+});
+
+wakeToggle.addEventListener('change', () => sendWakeSchedule(true));
+
+// ── Drawer ────────────────────────────────────────────────────────────────────
+function openDrawer()  { drawer.classList.add('open'); overlay.classList.add('open'); }
+function closeDrawerFn(){ drawer.classList.remove('open'); overlay.classList.remove('open'); }
+
+settingsBtn.addEventListener('click', openDrawer);
+closeDrawer.addEventListener('click', closeDrawerFn);
+overlay.addEventListener('click', closeDrawerFn);
+
+// ── Load audio devices ────────────────────────────────────────────────────────
+async function loadDevices() {
+  try {
+    const res = await fetch(`${BASE}/get_outputs`);
+    const data = await res.json();
+    if (data.error) { deviceSelect.innerHTML = `<option>${data.error}</option>`; return; }
+    deviceSelect.innerHTML = data.devices.map(d =>
+      `<option value="${d}">${d}</option>`
+    ).join('');
+  } catch (e) {
+    deviceSelect.innerHTML = '<option value="">系統連線失敗</option>';
+  }
+}
+
+// ── Sync to Reminders ─────────────────────────────────────────────────────────
+syncBtn.addEventListener('click', async () => {
+  const items = [];
+  document.querySelectorAll('.hour-row').forEach(row => {
+    const input = row.querySelector('.hour-input');
+    const text = input.value.trim();
+    if (text) items.push({ hour: parseInt(row.dataset.hour), text });
+  });
+
+  if (items.length === 0) {
+    syncStatus.textContent = '請先在打字區輸入您的計畫標題 🖋';
+    syncStatus.className = 'error';
+    return;
+  }
+
+  syncBtn.disabled = true;
+  syncBtn.textContent = '處理中…';
+  syncStatus.textContent = '';
+  syncStatus.className = '';
+
+  try {
+    const res = await fetch(`${BASE}/upload_reminders`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(items)
+    });
+    const data = await res.json();
+    if (data.errors && data.errors.length > 0) {
+      syncStatus.textContent = `成功 ${data.added.length} 筆，失敗 ${data.errors.length} 筆`;
+      syncStatus.className = 'error';
+    } else {
+      syncStatus.textContent = `已成功同步 ${data.added.length} 筆至 Mac 提醒事項 ✓`;
+      syncStatus.className = 'success';
+    }
+  } catch (e) {
+    syncStatus.textContent = '系統連線失敗';
+    syncStatus.className = 'error';
+  } finally {
+    syncBtn.disabled = false;
+    syncBtn.textContent = '同步至 Mac 提醒事項';
+  }
+});
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+setInterval(updateClock, 1000);
+updateClock();
+loadDevices();
+onAlarmTimeChange();
+</script>
+</body>
+</html>

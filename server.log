@@ -1,0 +1,37 @@
+ * Serving Flask app 'app'
+ * Debug mode: off
+[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5001
+[33mPress CTRL+C to quit[0m
+127.0.0.1 - - [26/Mar/2026 00:58:22] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [26/Mar/2026 00:59:59] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [26/Mar/2026 00:59:59] "[36mGET /photo_resource/for_web.jpg HTTP/1.1[0m" 304 -
+127.0.0.1 - - [26/Mar/2026 00:59:59] "GET /get_outputs HTTP/1.1" 200 -
+127.0.0.1 - - [26/Mar/2026 01:00:00] "[36mGET / HTTP/1.1[0m" 304 -
+127.0.0.1 - - [26/Mar/2026 01:00:00] "[36mGET /photo_resource/for_web.jpg HTTP/1.1[0m" 304 -
+127.0.0.1 - - [26/Mar/2026 01:00:00] "[36mGET / HTTP/1.1[0m" 304 -
+127.0.0.1 - - [26/Mar/2026 01:00:00] "[36mGET /photo_resource/for_web.jpg HTTP/1.1[0m" 304 -
+127.0.0.1 - - [26/Mar/2026 01:00:00] "GET /get_outputs HTTP/1.1" 200 -
+127.0.0.1 - - [26/Mar/2026 01:00:00] "GET /get_outputs HTTP/1.1" 200 -
+127.0.0.1 - - [26/Mar/2026 01:00:01] "[36mGET / HTTP/1.1[0m" 304 -
+127.0.0.1 - - [26/Mar/2026 01:00:01] "[36mGET /photo_resource/for_web.jpg HTTP/1.1[0m" 304 -
+127.0.0.1 - - [26/Mar/2026 01:00:01] "GET /get_outputs HTTP/1.1" 200 -
+127.0.0.1 - - [26/Mar/2026 01:00:11] "POST /upload_audio HTTP/1.1" 200 -
+127.0.0.1 - - [26/Mar/2026 01:00:12] "POST /set_output HTTP/1.1" 200 -
+127.0.0.1 - - [26/Mar/2026 01:00:12] "POST /play_alarm HTTP/1.1" 200 -
+127.0.0.1 - - [26/Mar/2026 01:00:17] "POST /set_output HTTP/1.1" 200 -
+127.0.0.1 - - [26/Mar/2026 01:00:17] "POST /play_alarm HTTP/1.1" 200 -
+127.0.0.1 - - [26/Mar/2026 01:00:20] "POST /set_output HTTP/1.1" 200 -
+127.0.0.1 - - [26/Mar/2026 01:00:20] "POST /play_alarm HTTP/1.1" 200 -
+127.0.0.1 - - [26/Mar/2026 01:00:21] "POST /set_output HTTP/1.1" 200 -
+127.0.0.1 - - [26/Mar/2026 01:00:21] "POST /play_alarm HTTP/1.1" 200 -
+127.0.0.1 - - [26/Mar/2026 01:00:24] "POST /stop_alarm HTTP/1.1" 200 -
+127.0.0.1 - - [26/Mar/2026 01:01:00] "POST /set_output HTTP/1.1" 200 -
+127.0.0.1 - - [26/Mar/2026 01:01:00] "POST /play_alarm HTTP/1.1" 200 -
+127.0.0.1 - - [26/Mar/2026 01:01:03] "POST /stop_alarm HTTP/1.1" 200 -
+127.0.0.1 - - [26/Mar/2026 01:01:54] "POST /set_wake_schedule HTTP/1.1" 200 -
+127.0.0.1 - - [26/Mar/2026 01:04:00] "POST /set_output HTTP/1.1" 200 -
+127.0.0.1 - - [26/Mar/2026 01:04:00] "POST /play_alarm HTTP/1.1" 200 -
+127.0.0.1 - - [26/Mar/2026 01:04:08] "POST /stop_alarm HTTP/1.1" 200 -
+127.0.0.1 - - [26/Mar/2026 01:04:08] "POST /set_wake_schedule HTTP/1.1" 200 -
+127.0.0.1 - - [26/Mar/2026 01:04:41] "POST /upload_reminders HTTP/1.1" 200 -
